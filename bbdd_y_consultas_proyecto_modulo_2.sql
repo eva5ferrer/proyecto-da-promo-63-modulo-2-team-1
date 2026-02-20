@@ -44,6 +44,9 @@ CREATE TABLE fk_id_artista_id_artista_similar (
 );
 
 -- DROP SCHEMA concierto_milenial
+/*INSERT INTO artistas (id_artista, nombre_artista, biografia, reproducciones)
+VALUES*/
+
 
 /*INSERT INTO canciones (id_cancion, titulo, anio, id_artista)
 VALUES ('2HoDr1yVksl19omOhc1zWy', 'Hip-Hop', 2000, 1),
@@ -1180,4 +1183,31 @@ VALUES ('2HoDr1yVksl19omOhc1zWy', 'Hip-Hop', 2000, 1),
  ('3M5zYFNlhyOde4rbYG3ogl', 'Drivers', 2001, 512),
  ('1O8yJswbX1ScNnbAi1A1jI', 'Hora bunta', 2001, 512);*/
  
+/*INSERT INTO generos (id_genero, genero)
+VALUES*/
+
+/*INSERT INTO fk_id_cancion_id_genero (id_cancion, id_genero)
+VALUES*/
+
+/*INSERT INTO artistas_similares (id_artista_similar, nombre_artista_similar)
+VALUES*/
+
+/*INSERT INTO fk_id_artista_artista_similar (id_artista, id_artista_similar)
+VALUES*/
  
+ 
+ 
+ /*POSIBLES CONSULTAS
+ 
+ 1. Que 5 artistas de cada año fueron los que tuvieron más oyentes
+ 2. Que 5 artistas de cada año fueron los que tuvieron más reproducciones
+ 3. organiza los géneros de más reproducciones a menos
+ 4. Que artstas similares tiene el cantante xxxx  o los cantantes xxx (los primeros de cada año, por ejemplo)
+ 5. Cual es el año con más canciones del mismo artista o algo tipo para saber que artista o que cancion es la top 1
+ 6. 
+ 7. 
+ 8. 
+ 9. 
+ 10. 
+ 11. 
+ */
