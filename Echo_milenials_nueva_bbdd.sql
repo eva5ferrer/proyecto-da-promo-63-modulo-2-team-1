@@ -47,4 +47,5 @@ CREATE TABLE relacion_artista_con_similares (
 
 SHOW PROCESSLIST;
 
+SELECT COUNT(*) FROM relacion_artista_con_similares;
 
