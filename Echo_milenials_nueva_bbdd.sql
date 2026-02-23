@@ -44,7 +44,15 @@ CREATE TABLE relacion_artista_con_similares (
 	nombre_artista VARCHAR(50) NOT NULL,
     nombre_artista_similar VARCHAR(50) NOT NULL
 );
+-- 1. Borramos la tabla vieja (esto borra los IDs desordenados)
+DROP TABLE IF EXISTS relacion_artista_con_similares;
 
+-- 2. La creamos de nuevo con el tamaño correcto desde el principio
+CREATE TABLE relacion_artista_con_similares (
+    id_relacion INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_artista VARCHAR(255) NOT NULL,
+    nombre_artista_similar VARCHAR(255) NOT NULL
+);
 SHOW PROCESSLIST;
 
 SELECT COUNT(*) FROM relacion_artista_con_similares;
