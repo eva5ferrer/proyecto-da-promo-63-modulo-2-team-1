@@ -120,45 +120,62 @@ ORDER BY reproducciones DESC
 LIMIT 10;
 
 
--- 3. Dominio de Catálogo: Contar cuántas canciones tiene cada artista de Hip Hop para identificar quién tiene el repertorio más sólido para un show largo.
+-- 3. Dominio de Catálogo: Contar cuántas canciones tiene cada artista de Hip Hop para identificar quién tiene el repertorio 
+-- más sólido para un show largo.
 
 SELECT a.nombre_artista, COUNT(c.id_cancion) AS num_canciones, a.oyentes 
 FROM artistas a
 LEFT JOIN canciones c ON a.id_artista = c.id_artista
 GROUP BY a.id_artista
 HAVING num_canciones > 5
-ORDER BY a.oyentes DESC;
+ORDER BY a.oyentes DESC; -- lo ordenamos por oyentes o por canciones?
 
 -- 4. El "Efecto 2000": Filtrar todas las canciones de Pop del año 2000 para crear un bloque nostálgico de apertura del festival.
 
-SELECT titulo, anio 
+SELECT titulo, anio
 FROM canciones 
 WHERE anio = 2000 
-LIMIT 20;
+LIMIT 20; 
+
+-- ordenaria por numero de reproducciones de los artistas no?:
+SELECT c.titulo, c.anio, a. reproducciones AS reproducciones_artista
+FROM canciones AS c
+LEFT JOIN artistas AS a
+USING (id_artista)
+WHERE c.anio = 2000 
+ORDER BY a.reproducciones DESC
+LIMIT 20; 
 
 -- 5. Audiencia Acumulada: Sumar el total de oyentes de los géneros Pop y Hip Hop para presentar al cliente el alcance potencial de marketing.
-
 
 SELECT g.genero, SUM(a.oyentes) AS alcance_total
 FROM artistas AS a
 INNER JOIN canciones AS c
-  ON a.id_artista = c.id_artista
+ON a.id_artista = c.id_artista
 INNER JOIN fk_id_cancion_id_genero AS fk
-  ON c.id_cancion = fk.id_cancion
+ON c.id_cancion = fk.id_cancion
 INNER JOIN generos AS g
-  ON fk.id_genero = g.id_genero
-WHERE LOWER(g.genero) IN ('pop', 'hip-hop')
+ON fk.id_genero = g.id_genero
+WHERE g.genero IN ('pop', 'hip-hop')
 GROUP BY g.genero;
 
 
--- 6. Análisis de "Power Play": Identificar artistas que tengan más de 1,000,000 de reproducciones pero menos de 5 canciones (artistas de "One Hit Wonder" ideales para apariciones especiales).
+-- 6. Análisis de "Power Play": Identificar artistas que tengan más de 1,000,000 de reproducciones pero menos de 5 canciones 
+-- (artistas de "One Hit Wonder" ideales para apariciones especiales).
 
-SELECT nombre_artista, reproducciones, oyentes 
-FROM artistas 
-WHERE id_artista IN (
-SELECT id_artista FROM canciones GROUP BY id_artista HAVING COUNT(id_cancion) < 5
+SELECT a.nombre_artista, a.reproducciones, a.oyentes,COUNT(c.id_cancion) AS N_canciones 
+FROM artistas AS a
+INNER JOIN canciones AS c ON a.id_artista = c.id_artista
+WHERE a.id_artista IN (
+    SELECT id_artista 
+    FROM canciones 
+    GROUP BY id_artista 
+    HAVING COUNT(id_cancion) < 5
 )
-AND reproducciones > 1000000;
+AND a.reproducciones > 1000000
+GROUP BY a.nombre_artista, a.reproducciones, a.oyentes
+ORDER BY a.reproducciones DESC;
+
 
 -- 📅 DÍA 2: "The Urban Pulse" (Latin & Rap)
 -- Defensa Estratégica: Es el día de la tendencia y la fidelidad. 
