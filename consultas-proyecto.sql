@@ -22,7 +22,6 @@ FROM artistas
 ORDER BY reproducciones DESC 
 LIMIT 10;
 
-
 -- 3. Dominio de Catálogo: Contar cuántas canciones tiene cada artista de Hip Hop para identificar quién tiene el repertorio 
 -- más sólido para un show largo.
 
@@ -33,15 +32,10 @@ GROUP BY a.id_artista
 HAVING num_canciones > 5
 ORDER BY a.oyentes DESC; -- lo ordenamos por oyentes o por canciones?
 
--- 4. El "Efecto 2000": Filtrar todas las canciones de Pop del año 2000 para crear un bloque nostálgico de apertura del festival.
+-- 4. El "Efecto 2000": Filtrar todas las canciones de Pop del año 2000 para crear un bloque nostálgico de apertura del festival. 
+-- Limitar respuesta a 20 canciones y ordenar por reproducciones de los artistas y mostrando el nombre de los cantantes.
 
-SELECT titulo, anio
-FROM canciones 
-WHERE anio = 2000 
-LIMIT 20; 
-
--- ordenaria por numero de reproducciones de los artistas no?:
-SELECT c.titulo, c.anio, a. reproducciones AS reproducciones_artista
+SELECT c.titulo, c.anio, a. reproducciones AS reproducciones_artista, a.nombre_artista
 FROM canciones AS c
 LEFT JOIN artistas AS a
 USING (id_artista)
@@ -95,9 +89,10 @@ GROUP BY g.genero;
 
 -- Aunque el volumen de canciones es menor (35 de cada uno), estos géneros representan el sonido que estaba a punto de explotar globalmente en 2003. Es una apuesta por la "calidad y el prestigio urbano".
 
--- 8. Curaduría de Nicho: Listado de todos los títulos de canciones de 'Latin' y 'Rap' para armar el programa de mano del segundo escenario.
+-- 8. Curaduría de Nicho: Listado de todos los títulos de canciones de 'Latin' y 'Rap' para armar el programa de mano del segundo escenario. 
+-- Ordenar por reproducciones y limitar a 20.
 
-SELECT c.titulo, g.genero, a.nombre_artista
+SELECT c.titulo, g.genero, a.nombre_artista, a.reproducciones
 FROM canciones AS c
 INNER JOIN artistas AS a 
   ON c.id_artista = a.id_artista
@@ -106,9 +101,10 @@ INNER JOIN fk_id_cancion_id_genero AS fk
 INNER JOIN generos AS g
   ON fk.id_genero = g.id_genero
 WHERE g.genero IN ('latin', 'rap')
-ORDER BY g.genero, c.titulo;
+ORDER BY a.reproducciones DESC
+LIMIT 20;
 
--- 9. El Rey del Cierre: Identificar al artista de 'Rap' con más oyentes para liderar el cierre del día 2.
+-- 9. Los reyes del Cierre: Identificar los artista de 'Latin' con más oyentes para liderar el cierre del día 2.
 
 SELECT DISTINCT a.nombre_artista, a.oyentes
 FROM artistas AS a
@@ -118,9 +114,9 @@ INNER JOIN fk_id_cancion_id_genero AS fk
   ON c.id_cancion = fk.id_cancion
 INNER JOIN generos AS g
   ON fk.id_genero = g.id_genero
-WHERE g.genero = 'rap'
+WHERE g.genero = 'latin'
 ORDER BY a.oyentes DESC
-LIMIT 1;
+LIMIT 3;
 
 
 -- 10. Evolución del Género: Seleccionar canciones de 'Latin' lanzadas específicamente en 2003 para mostrar la modernidad del catálogo.
@@ -136,21 +132,8 @@ INNER JOIN generos AS g
 WHERE g.genero = 'latin'
   AND c.anio = 2003;
   
-  
--- Revisar artista y título de canción, no coinciden, pueden estar mal las tuplas??. 
- 
-SELECT 
-  c.titulo,
-  a.nombre_artista,
-  c.anio
-FROM canciones AS c
-INNER JOIN artistas AS a
-  ON c.id_artista = a.id_artista
-WHERE a.nombre_artista = 'Revolver'
-  AND c.anio = 2003;
-  
 
--- 11. Contenido de Marca: Extraer el nombre del artista y su biografia (solo de los géneros Latin/Rap) para generar contenido en redes sociales antes del evento.
+-- BORRAR 11. Contenido de Marca: Extraer el nombre del artista y su biografia (solo de los géneros Latin/Rap) para generar contenido en redes sociales antes del evento.
 
 SELECT DISTINCT a.nombre_artista, a.biografia
 FROM artistas AS a
